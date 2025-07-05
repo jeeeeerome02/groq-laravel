@@ -163,7 +163,7 @@
     </div>
 
     <div class="chat-box" id="chatBox">
-        <!-- Dynamic messages injected here -->
+        <!-- Messages here -->
     </div>
 
     <div class="chat-footer">
@@ -174,20 +174,32 @@
     </div>
 </div>
 
-<footer>&copy; {{ date('Y') }} Jerome Evangelista</footer>
+<footer>&copy; <span id="year"></span> Jerome Evangelista</footer>
 
 <script>
-    const chatForm = document.getElementById('chatForm');
     const chatBox = document.getElementById('chatBox');
+    const chatForm = document.getElementById('chatForm');
     const messageInput = document.getElementById('messageInput');
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-    chatForm.addEventListener('submit', async function(e) {
+    let conversationHistory = [
+        { role: 'assistant', content: 'Hi, I am Groq AI Chatbot developed by Jerome Evangelista, How can I help you?' }
+    ];
+
+    // Show greeting
+    window.addEventListener('DOMContentLoaded', () => {
+        addMessage(conversationHistory[0].content, 'bot');
+    });
+
+    chatForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
         const userMessage = messageInput.value;
         addMessage(userMessage, 'user');
+        conversationHistory.push({ role: 'user', content: userMessage });
         messageInput.value = '';
 
+        // Typing indicator
         const typingIndicator = document.createElement('div');
         typingIndicator.className = 'message bot';
         typingIndicator.innerHTML = `
@@ -196,8 +208,7 @@
                 <div class="typing-indicator">
                     <span></span><span></span><span></span>
                 </div>
-            </div>
-        `;
+            </div>`;
         chatBox.appendChild(typingIndicator);
         scrollToBottom();
 
@@ -208,15 +219,16 @@
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
-                body: JSON.stringify({ message: userMessage })
+                body: JSON.stringify({ history: conversationHistory })
             });
 
             const data = await response.json();
             typingIndicator.remove();
             addMessage(data.reply, 'bot');
+            conversationHistory.push({ role: 'assistant', content: data.reply });
         } catch (error) {
             typingIndicator.remove();
-            addMessage('Something went wrong. Please try again.', 'bot');
+            addMessage("Something went wrong. Please try again.", 'bot');
         }
     });
 
