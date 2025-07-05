@@ -263,7 +263,9 @@
         scrollToBottom();
 
         try {
-            const response = await fetch('/chat/send', {
+            const baseUrl = "{{ url('') }}";
+            const response = await fetch(`${baseUrl}/chat/send`, {
+
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
