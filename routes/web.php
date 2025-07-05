@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatController;
 
-Route::get('/', function () {
-    return view('chat');
-});
+// In routes/web.php
+Route::get('/chat', [ChatController::class, 'showChat']);
+Route::post('/chat/send', [ChatController::class, 'sendMessage']);
+
