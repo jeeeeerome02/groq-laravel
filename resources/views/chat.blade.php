@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
     <style>
+        html {
+            box-sizing: border-box;
+        }
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
         :root {
     --primary: #3d8bfd;
     --primary-light: #6ea8fe;
@@ -362,36 +368,112 @@ footer {
 }
 
 @media (max-width: 576px) {
-    .chat-container {
-        margin: 4px;
-        height: 97vh;
+    html, body {
+        width: 100vw;
+        min-width: 0;
+        overflow-x: hidden;
     }
-    .bubble {
-        max-width: 98%;
-        font-size: 0.95rem;
+    .chat-container {
+        width: 100%;
+        max-width: 100vw;
+        margin: 0;
+        padding: 2vw;
+        height: calc(100dvh - 4vw);
+        border-radius: 1.2rem;
+        box-shadow: 0 6px 32px 0 rgba(61,139,253,0.10), 0 1.5px 6px 0 rgba(61,139,253,0.06);
+        background: rgba(255,255,255,0.82);
+        backdrop-filter: blur(14px) saturate(1.2);
+        border: 1.5px solid rgba(61,139,253,0.10);
+        position: relative;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    .chat-container::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 1.2rem;
+        pointer-events: none;
+        z-index: 1;
+        background: linear-gradient(120deg, rgba(61,139,253,0.08) 0%, rgba(255,255,255,0.0) 100%);
+        animation: borderGlow 3s linear infinite alternate;
+    }
+    @keyframes borderGlow {
+        0% { box-shadow: 0 0 0 0 rgba(61,139,253,0.10); }
+        100% { box-shadow: 0 0 12px 2px rgba(61,139,253,0.13); }
     }
     .chat-header {
-        padding: 8px 4px 6px 4px;
+        padding: 6px 2vw 4px 2vw;
+        font-size: 0.98rem;
+        background: rgba(255,255,255,0.7);
+        backdrop-filter: blur(8px);
+        border-top-left-radius: 1.2rem;
+        border-top-right-radius: 1.2rem;
+    }
+    .chat-header h5 {
+        font-size: 0.98rem;
+    }
+    .chat-header small {
+        font-size: 0.7rem;
     }
     .chat-box {
-        padding: 6px 2px 4px 2px;
+        padding: 4vw 2vw 2vw 2vw;
+        gap: 0.1rem;
+    }
+    .bubble {
+        max-width: 100%;
+        font-size: 0.93rem;
+        padding: 8px 8px;
+        word-break: break-word;
+    }
+    .avatar {
+        width: 22px;
+        height: 22px;
+        font-size: 0.9rem;
+        margin-right: 4px;
+        margin-left: 4px;
     }
     .chat-footer {
-        padding: 4px 2px;
+        padding: 2vw 2vw;
+        background: rgba(255,255,255,0.7);
+        backdrop-filter: blur(8px);
+        border-bottom-left-radius: 1.2rem;
+        border-bottom-right-radius: 1.2rem;
     }
-    #sendBtn {
-        width: 30px;
-        height: 30px;
-        font-size: 0.95rem;
-    }
-    #ttsToggle {
-        width: 26px;
-        height: 26px;
-        font-size: 0.85rem;
+    #chatForm {
+        gap: 0.2rem;
     }
     #messageInput {
-        padding: 6px 8px;
-        font-size: 0.95rem;
+        padding: 7px 8px;
+        font-size: 0.93rem;
+        border-radius: 1.2rem;
+    }
+    #sendBtn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
+        border-radius: 50%;
+    }
+    #ttsToggle {
+        width: 22px;
+        height: 22px;
+        font-size: 0.8rem;
+        border-radius: 50%;
+    }
+    #voiceSelect {
+        font-size: 0.9rem;
+        min-width: 80px;
+        max-width: 120px;
+    }
+    .position-fixed.bottom-0.end-0.p-3 {
+        right: 0 !important;
+        left: 0 !important;
+        width: 100vw;
+        padding: 0.5rem !important;
+    }
+    footer {
+        font-size: 0.75rem;
+        padding: 4px 0 2px 0;
     }
 }
     </style>
